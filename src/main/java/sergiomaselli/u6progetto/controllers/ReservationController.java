@@ -8,6 +8,7 @@ import sergiomaselli.u6progetto.entities.Reservation;
 import sergiomaselli.u6progetto.entities.User;
 import sergiomaselli.u6progetto.services.ReservationService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,5 +23,17 @@ public class ReservationController {
                                @AuthenticationPrincipal User user,
                                @RequestParam int posti) {
         return reservationService.prenota(eventoId, user, posti);
+    }
+
+    @GetMapping("/utente")
+    @PreAuthorize("hasRole('USER')")
+    public List<Reservation> getPrenotazioniUtente(@AuthenticationPrincipal User user) {
+        return reservationService.getPrenotazioniByUtente(user.getId());
+    }
+
+    @GetMapping("/evento/{eventoId}")
+    @PreAuthorize("hasRole('ORGANIZER')")
+    public List<Reservation> getPrenotazioniEvento(@PathVariable UUID eventoId) {
+        return reservationService.getPrenotazioniByEvento(eventoId);
     }
 }

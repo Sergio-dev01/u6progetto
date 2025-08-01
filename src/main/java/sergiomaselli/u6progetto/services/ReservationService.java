@@ -9,6 +9,7 @@ import sergiomaselli.u6progetto.repositories.EventRepository;
 import sergiomaselli.u6progetto.repositories.ReservationRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,5 +33,13 @@ public class ReservationService {
         r.setPostiPrenotati(posti);
         r.setDataPrenotazione(LocalDateTime.now());
         return reservationRepo.save(r);
+    }
+
+    public List<Reservation> getPrenotazioniByUtente(UUID utenteId) {
+        return reservationRepo.findByUtenteId(utenteId);
+    }
+
+    public List<Reservation> getPrenotazioniByEvento(UUID eventoId) {
+        return reservationRepo.findByEventoId(eventoId);
     }
 }
