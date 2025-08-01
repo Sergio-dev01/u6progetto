@@ -12,11 +12,11 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User registerUser(String name, String email, String rawPassword, Role role) {
+    public User registerUser(String name, String email, String password, Role role) {
         User newUser = new User();
         newUser.setName(name);
         newUser.setEmail(email);
-        newUser.setPassword(passwordEncoder.encode(rawPassword));
+        newUser.setPassword(passwordEncoder.encode(password));
         newUser.setRole(role);
         return userRepository.save(newUser);
     }
