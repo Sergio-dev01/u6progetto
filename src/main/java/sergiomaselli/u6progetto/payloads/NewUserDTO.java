@@ -3,6 +3,7 @@ package sergiomaselli.u6progetto.payloads;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import sergiomaselli.u6progetto.entities.Role;
 
 public class NewUserDTO {
     @Email(message = "Email non valida")
@@ -16,7 +17,8 @@ public class NewUserDTO {
     @NotBlank(message = "Nome obbligatorio")
     private String nome;
 
-    // getter e setter
+    private Role role;
+
     public String getEmail() {
         return email;
     }
@@ -39,5 +41,9 @@ public class NewUserDTO {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Role getRole() {
+        return role;
     }
 }

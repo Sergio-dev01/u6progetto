@@ -1,10 +1,8 @@
 package sergiomaselli.u6progetto.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -14,6 +12,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Event {
     @Id
     @GeneratedValue
@@ -27,6 +26,7 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "organizer_id")
+    @JsonIgnoreProperties({"password", "eventiCreati"})
     private User creatore;
 }
 

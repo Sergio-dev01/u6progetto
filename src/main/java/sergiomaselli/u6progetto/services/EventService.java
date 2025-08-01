@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sergiomaselli.u6progetto.entities.Event;
 import sergiomaselli.u6progetto.entities.User;
+import sergiomaselli.u6progetto.payloads.NewEventDTO;
 import sergiomaselli.u6progetto.repositories.EventRepository;
 
 import java.util.List;
@@ -11,13 +12,23 @@ import java.util.UUID;
 
 @Service
 public class EventService {
+
     @Autowired
     private EventRepository eventRepo;
 
-    public Event creaEvento(Event e, User creatore) {
+    public Event creaEvento(NewEventDTO dto, User creatore) {
+        if (creatore == null) throw new RuntimeException("Creatore nullo!");
+        Event e = new Event();
+        e.setTitolo(dto.getTitolo());
+        e.setDescrizione(dto.getDescrizione());
+        e.setData(dto.getData());
+        e.setLuogo(dto.getLuogo());
+        e.setPostiDisponibili(dto.getPostiDisponibili());
         e.setCreatore(creatore);
+
         return eventRepo.save(e);
     }
+
 
     public List<Event> listaEventi() {
         return eventRepo.findAll();
