@@ -11,46 +11,35 @@ import java.util.UUID;
 
 @Service
 public class EventService {
-
     @Autowired
-    private EventRepository eventoRepository;
+    private EventRepository eventRepo;
 
-    public Event creaEvento(Event event, User creatore) {
-        event.setCreatore(creatore);
-        return eventoRepository.save(event);
+    public Event creaEvento(Event e, User creatore) {
+        e.setCreatore(creatore);
+        return eventRepo.save(e);
     }
 
-    public List<Event> getEventiCreatiDa(User user) {
-        return eventoRepository.findByCreatoreId(user.getId());
+    public List<Event> listaEventi() {
+        return eventRepo.findAll();
     }
 
-    public List<Event> getTuttiGliEventi() {
-        return eventoRepository.findAll();
+    public Event modificaEvento(UUID id, Event nuovoevent, User user) {
+        Event e = eventRepo.findById(id).orElseThrow(() -> new RuntimeException("Evento non trovato"));
+        if (!e.getCreatore().getId().equals(user.getId()))
+            throw new RuntimeException("Non puoi modificare questo evento");
+
+        e.setTitolo(nuovoevent.getTitolo());
+        e.setDescrizione(nuovoevent.getDescrizione());
+        e.setData(nuovoevent.getData());
+        e.setLuogo(nuovoevent.getLuogo());
+        e.setPostiDisponibili(nuovoevent.getPostiDisponibili());
+        return eventRepo.save(e);
     }
 
-    public Event findById(UUID id) {
-        return eventoRepository.findById(id).orElseThrow(() -> new RuntimeException("Evento non trovato"));
-    }
-
-    public void deleteEvent(UUID id, User richiedente) {
-        Event evento = findById(id);
-        if (!evento.getCreatore().getId().equals(richiedente.getId())) {
-            throw new RuntimeException("Non puoi eliminare un evento che non hai creato");
-        }
-        eventoRepository.delete(evento);
-    }
-
-    public Event updateEvento(UUID id, Event eventoAggiornato, User richiedente) {
-        Event eventoEsistente = findById(id);
-        if (!eventoEsistente.getCreatore().getId().equals(richiedente.getId())) {
-            throw new RuntimeException("Non puoi modificare un evento che non hai creato");
-        }
-        eventoEsistente.setTitolo(eventoAggiornato.getTitolo());
-        eventoEsistente.setDescrizione(eventoAggiornato.getDescrizione());
-        eventoEsistente.setData(eventoAggiornato.getData());
-        eventoEsistente.setLuogo(eventoAggiornato.getLuogo());
-        eventoEsistente.setPostiDisponibili(eventoAggiornato.getPostiDisponibili());
-        return eventoRepository.save(eventoEsistente);
+    public void eliminaEvento(UUID id, User user) {
+        Event e = eventRepo.findById(id).orElseThrow(() -> new RuntimeException("Evento non trovato"));
+        if (!e.getCreatore().getId().equals(user.getId()))
+            throw new RuntimeException("Non puoi eliminare questo evento");
+        eventRepo.delete(e);
     }
 }
-
