@@ -37,6 +37,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             try {
                 jwtTools.verifyToken(token);
                 String userId = jwtTools.extractUserId(token);
+
                 User user = userRepository.findById(UUID.fromString(userId)).orElse(null);
 
                 if (user != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -47,6 +48,9 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                     );
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+                    System.out.println("JWTAuthFilter - Utente autenticato: " + user.getEmail());
                 }
 
             } catch (Exception ex) {

@@ -6,6 +6,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sergiomaselli.u6progetto.entities.Event;
 import sergiomaselli.u6progetto.entities.User;
+import sergiomaselli.u6progetto.payloads.NewEventDTO;
 import sergiomaselli.u6progetto.services.EventService;
 
 import java.util.List;
@@ -14,14 +15,17 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/eventi")
 public class EventoController {
+
     @Autowired
     private EventService eventService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ORGANIZER')")
-    public Event crea(@RequestBody Event e, @AuthenticationPrincipal User user) {
-        return eventService.creaEvento(e, user);
+    public Event crea(@RequestBody NewEventDTO dto, @AuthenticationPrincipal User user) {
+        System.out.println("Utente autenticato: " + user);
+
+        return eventService.creaEvento(dto, user);
     }
+
 
     @GetMapping
     public List<Event> lista() {
