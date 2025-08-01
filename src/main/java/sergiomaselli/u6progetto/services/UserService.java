@@ -2,10 +2,12 @@ package sergiomaselli.u6progetto.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import sergiomaselli.u6progetto.entities.Role;
 import sergiomaselli.u6progetto.entities.User;
 import sergiomaselli.u6progetto.repositories.UserRepository;
 
+@Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
@@ -20,6 +22,6 @@ public class UserService {
         newUser.setRole(role);
         return userRepository.save(newUser);
     }
-    
+
 }
 
